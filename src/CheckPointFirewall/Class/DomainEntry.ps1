@@ -212,8 +212,8 @@ class GlobalDomainAssignment {
     }
 }
 
-# DomainObject Class
-class DomainObject {
+# DomainEntry Class
+class DomainEntry {
     [string] $Uid
     [string] $Name
     [string] $Type
@@ -228,12 +228,14 @@ class DomainObject {
     [MetaInfo] $MetaInfo
     [bool] $ReadOnly
 
-    DomainObject() {}
+    [string] $ManagementServerIP
 
-    DomainObject([object] $obj) {
+    DomainEntry () {}
+
+    DomainEntry ([object] $obj) {
         try {
             if (-not $obj) {
-                throw "DomainObject data is null."
+                throw "DomainEntry data is null."
             }
             $this.Uid = [string]$obj.uid
             $this.Name = [string]$obj.name
@@ -247,7 +249,7 @@ class DomainObject {
                 if ($parsedDomain) {
                     $this.Domain = [Domain]::new($parsedDomain)
                 } else {
-                    Write-Warning "Domain parsing failed for DomainObject UID $($this.Uid)"
+                    Write-Warning "Domain parsing failed for DomainEntry UID $($this.Uid)"
                 }
             }
 
@@ -279,6 +281,8 @@ class DomainObject {
                 $this.Servers = @()
             }
 
+            $this.ManagementServerIP = $this.Servers |where-object {$_.type -eq 'management server'} | select -expandproperty IPv4Address
+
             $this.Comments = [string]$obj.comments
             $this.Color = [string]$obj.color
             $this.Icon = [string]$obj.icon
@@ -297,14 +301,23 @@ class DomainObject {
                 if ($parsedMetaInfo) {
                     $this.MetaInfo = [MetaInfo]::new($parsedMetaInfo)
                 } else {
-                    Write-Warning "MetaInfo parsing failed for DomainObject UID $($this.Uid)"
+                    Write-Warning "MetaInfo parsing failed for DomainEntry UID $($this.Uid)"
                 }
             }
 
             $this.ReadOnly = [bool]$obj.'read-only'
+
+
+            
+
         } catch {
-            Write-Error "Error initializing DomainObject: $_"
+            Write-Error "Error initializing DomainEntry: $_"
         }
     }
 }
 
+Update-TypeData -TypeName 'DomainEntry' -Force -DefaultDisplayPropertySet @(
+    'Uid'
+    'Name'
+    'ManagementServerIP'
+)

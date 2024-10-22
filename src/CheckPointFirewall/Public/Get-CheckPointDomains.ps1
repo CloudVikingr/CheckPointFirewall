@@ -1,28 +1,25 @@
 <#
     .SYNOPSIS
-    Retrieves logs from the CheckPoint API based on the provided query.
+    
 
     .DESCRIPTION
-    This function constructs a request to the CheckPoint API to retrieve logs, using the specified query and session ID.
+    
 
     .PARAMETER ApiUrl
-    The base URL of the CheckPoint REST API.
+
 
     .PARAMETER Query
-    The query string to filter the logs.
 
-    .PARAMETER SessionId
-    The session ID obtained during authentication.
 
-    .PARAMETER TimeFrame
-    The timeframe for the logs, default is "last-24-hours".
+    .PARAMETER 
+
 
     .EXAMPLE
-    $logs = Get-CheckPointDomains -ApiUrl "https://api.checkpoint.com" -Query "severity:high" -SessionId $sid
+
 
     .NOTES
     Author: Jason Wallace
-    Date: August 2024
+    Date: October 2024
     Version: 1.0
     #>
     function Get-CheckPointDomains {
@@ -62,8 +59,16 @@
 
                 Write-Verbose "Domains retrieved successfully."
 
-                # Parse REST response and create array of LogEntry objects
-                $results = $response.objects
+                # Parse REST response and create array of DomainEntry objects
+                $results = $response.objects | ForEach-Object {
+					try {
+                            # Instantiate a new DomainEntry object for each log entry
+                            [DomainEntry]::new($_)
+                        } catch {
+                            Write-Error "Error creating DomainEntry object: $_"
+                            $null  # Optionally, return $null or handle the error as needed
+                        }
+				}
 
                 return $results
             }
