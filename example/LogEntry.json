@@ -1,0 +1,64 @@
+{
+    "dst":  "15.15.23.234",
+    "rule":  "3.99",
+    "i_f_dir":  "outbound",
+    "proto_attr":  [
+                       {
+                           "isCHKPObject":  "false",
+                           "resolved":  "TCP (6)"
+                       }
+                   ],
+    "rule_uid":  "a3bab68a-52ae-45c1-901b-651ecf6c9f08",
+    "type":  "Connection",
+    "__interface":  "eth4",
+    "orig_log_server_attr":  [
+                                 {
+                                     "isCHKPObject":  "true",
+                                     "uuid":  "c2a9c15f-1c34-4f8a-a504-c54af2c775b1",
+                                     "resolved":  "HyperCompu_Log_Server"
+                                 }
+                             ],
+    "policy_date":  "2024-10-18T02:33:46Z",
+    "action":  "Drop",
+    "id":  "b4fc7b8f-f529-4724-9bd8-90e9e3b214b4",
+    "i_f_name":  "eth4",
+    "layer_name":  "GlobalMegatech Security",
+    "s_port":  "53373",
+    "product_family":  "Access",
+    "product":  "Firewall",
+    "sequencenum":  "68",
+    "src":  "172.44.22.232",
+    "src_attr":  [
+                     {
+                         "isCHKPObject":  "true",
+                         "resolved":  "node-172.44.22.232"
+                     }
+                 ],
+    "policy_name":  "MGMT_POLICY",
+    "match_table":  [
+                        {
+                            "parent_rule":  "0",
+                            "rule_action":  "Drop",
+                            "match_id":  "1171",
+                            "rule":  "3.1169",
+                            "rule_uid":  "a3bab68a-52ae-45c1-901b-651ecf6c9f08",
+                            "layer_name":  "GlobalMegatech Security",
+                            "layer_uuid":  "e1e79b50-1eda-4363-82db-65055e2744d7"
+                        }
+                    ],
+    "id_generated_by_indexer":  "false",
+    "db_tag":  "{a9c88263-d02b-4e76-a942-19cc8032450e}",
+    "orig_log_server":  "192.168.2.34",
+    "fservice":  "https",
+    "orig":  "FLIPPITY",
+    "marker":  "Hereisthemark",
+    "service":  "443",
+    "domain":  "MGMT_Dom",
+    "proto":  "6",
+    "calc_desc":  "https Traffic Dropped from 172.44.22.232 to 15.15.23.234",
+    "logid":  "0",
+    "time":  "2024-10-21T2:24:23Z",
+    "drop_reason":  "matched optimized drop",
+    "first":  "true",
+    "policy_mgmt":  "HyperCompu_Management_Server"
+}

@@ -1,0 +1,65 @@
+{
+    "uid":  "a3bab68a-52ae-45c1-901b-651ecf6c9f08",
+    "name":  "SecureNet-Domain-Alpha",
+    "type":  "domain",
+    "domain":  {
+                   "uid":  "c2a9c15f-1c34-4f8a-a504-c54af2c775b1",
+                   "name":  "System Data",
+                   "domain-type":  "mds"
+               },
+    "global-domain-assignments":  [
+                                      {
+                                          "uid":  "b4fc7b8f-f529-4724-9bd8-90e9e3b214b4",
+                                          "type":  "global-assignment",
+                                          "domain":  "@{uid=c2a9c15f-1c34-4f8a-a504-c54af2c775b1; name=System Data; domain-type=mds}",
+                                          "global-domain":  "b4fc7b8f-f529-4724-9bd8-90e9e3b214b4",
+                                          "global-access-policy":  "GlobalAccess-PolicyShield",
+                                          "assignment-status":  "up to date",
+                                          "assignment-up-to-date":  "@{posix=1729216718091; iso-8601=2024-10-17T18:58-0700}",
+                                          "comments":  "",
+                                          "color":  "black",
+                                          "icon":  "Objects/globalAssignment",
+                                          "tags":  "",
+                                          "meta-info":  "@{lock=unlocked; validation-state=ok; last-modify-time=; last-modifier=; creation-time=; creator=System}",
+                                          "read-only":  true
+                                      }
+                                  ],
+    "domain-type":  "domain",
+    "servers":  [
+                    {
+                        "name":  "SecureNet-Domain-Alpha_LogServer",
+                        "type":  "log server",
+                        "ipv4-address":  "117.166.132.236",
+                        "multi-domain-server":  "log-usw1-sec01",
+                        "active":  false
+                    },
+                    {
+                        "name":  "SecureNet-Domain-Alpha_ManagementServer",
+                        "type":  "management server",
+                        "ipv4-address":  "102.130.42.60",
+                        "multi-domain-server":  "mgmt-usw1-sec01",
+                        "active":  true
+                    }
+                ],
+    "comments":  "",
+    "color":  "black",
+    "icon":  "Objects/domain",
+    "tags":  [
+
+             ],
+    "meta-info":  {
+                      "lock":  "unlocked",
+                      "validation-state":  "ok",
+                      "last-modify-time":  {
+                                               "posix":  1719942240000,
+                                               "iso-8601":  "2024-07-02T10:44-0700"
+                                           },
+                      "last-modifier":  "System",
+                      "creation-time":  {
+                                            "posix":  1714839420000,
+                                            "iso-8601":  "2024-05-04T09:17-0700"
+                                        },
+                      "creator":  "System"
+                  },
+    "read-only":  false
+}
