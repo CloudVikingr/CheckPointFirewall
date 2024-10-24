@@ -36,10 +36,6 @@ function Connect-CheckPointProvider {
         [System.Management.Automation.PSCredential]$Credential,
 
         [Parameter(Mandatory = $false,
-                   HelpMessage = "Enter an existing token if available.")]
-        [string]$Token,
-
-        [Parameter(Mandatory = $false,
                    HelpMessage = "Fail on SSL certificate errors.")]
         [switch]$StrictSslErrors
     )
@@ -50,36 +46,30 @@ function Connect-CheckPointProvider {
 
     process {
         try {
-            if (-not $Token) {
-                if (-not $Credential) {
-                    throw "Credential is required for authentication if Token is not provided."
-                }
+            if (-not $Credential) {
+                throw "Credential is required for authentication if Token is not provided."
+            }
 
-                # Extract username and password from the credential object
-                $Username = $Credential.GetNetworkCredential().UserName
-                $Password = $Credential.GetNetworkCredential().Password
+            # Extract username and password from the credential object
+            $Username = $Credential.GetNetworkCredential().UserName
+            $Password = $Credential.GetNetworkCredential().Password
 
-                # Construct the authentication body
-                $body = @{
-                    user = $Username
-                    password = $Password
-                }
+            # Construct the authentication body
+            $body = @{
+                user = $Username
+                password = $Password
+            }
 
-                # Make the REST API call to authenticate
-                $response = Invoke-RestMethodIgnoreCertValidation -Uri "$ApiUrl/login" -Method Post -Body $body
+            # Make the REST API call to authenticate
+            $response = Invoke-RestMethodIgnoreCertValidation -Uri "$ApiUrl/login" -Method Post -Body $body
 
-                if ($response -and $response.sid) {
-                    Write-Verbose "Authentication successful. Token received."
-                    $Token = $response.sid
-                }
-                else {
-                    throw "Failed to authenticate. No token received."
-                }
+            if ($response -and $response.sid) {
+                Write-Verbose "Authentication successful. Token received."
+                $Token = $response.sid
             }
             else {
-                Write-Verbose "Using provided token."
+                throw "Failed to authenticate. No token received."
             }
-
             # Return the token for further API calls
             return $Token
         }
