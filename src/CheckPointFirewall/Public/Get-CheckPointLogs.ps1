@@ -51,7 +51,7 @@
             )]
             [string]$TimeFrame = "last-hour",
 
-            [Parameter(Mandatory = $true,
+            [Parameter(Mandatory = $false,
             HelpMessage = "Enter the PSCredential object for API authentication.")]
             [ValidateNotNullOrEmpty()]
             [System.Management.Automation.PSCredential]$Credential
@@ -61,17 +61,23 @@
         begin {
 
             Write-Verbose "Checking existing session"
-            if(-not $global:CheckPointFireWallSession){
-                Write-Verbose "No session found"
-                Write-Verbose "Connecting to CheckPoint Provider"
-                $token = Connect-CheckPointProvider -ApiUrl $ApiUrl -Credential $cred
+            if (-not $global:CheckPointFireWallSession) {
+                Write-Verbose "No active session. Connecting to CheckPoint Provider"
+                Connect-CheckPointProvider -ApiUrl $ApiUrl -Credential $Credential
             }
         }
 
         process {
             try {
                 $results = @()
-                $headers = @{ "X-chkp-sid" = $token }
+
+                if (-not $global:CheckPointFireWallSession)
+                {
+                     throw "No active session. Please connect first using Connect-CheckPointProvider."
+                }
+                
+                $authToken = $global:CheckPointFireWallSession.AuthToken
+                $headers = @{ "X-chkp-sid" = $authToken }
 
                 $queryId = $null
 
@@ -88,9 +94,12 @@
 
                 do {
                     Write-Verbose "Preparing to retrieve logs from CheckPoint API at $ApiUrl."
-                    $response = Invoke-RestMethodIgnoreCertValidation -Method Post -Uri "$ApiUrl/show-logs" -Body $body -Headers $headers
-                    Write-Verbose "Logs retrieved successfully."
-
+                    try {
+                        $response = Invoke-RestMethodIgnoreCertValidation -Method Post -Uri "$ApiUrl/show-logs" -Body $body -Headers $headers
+                    } catch {
+                        Write-Error "Error retrieving logs from $ApiUrl"
+                    }
+                    Write-Verbose "Logs retrieved"
                     $results += $response.logs | ForEach-Object {
                         try {
                             # Instantiate a new LogEntry object for each log entry

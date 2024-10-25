@@ -65,15 +65,13 @@ function Connect-CheckPointProvider {
 
             if ($response.sid) {
                 Write-Verbose "Authentication successful. Token received."
-                $Token = $response.sid
-                $global:CheckPointFireWallSession = [SessionContext]::new($response.sid)
+                $secureToken = ConvertTo-SecureString -String $response.sid -AsPlainText -Force
+                $global:CheckPointFireWallSession = [SessionContext]::new($secureToken)
 
             }
             else {
                 throw "Failed to authenticate. No token received."
             }
-            # Return the token for further API calls
-            return $Token
         }
         catch {
             Write-Error "An error occurred during connection: $_"
