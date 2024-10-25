@@ -47,7 +47,7 @@ function Connect-CheckPointProvider {
     process {
         try {
             if (-not $Credential) {
-                throw "Credential is required for authentication if Token is not provided."
+                $Credential = Get-Credential -Message "Enter your username without domain"
             }
 
             # Extract username and password from the credential object
@@ -63,9 +63,11 @@ function Connect-CheckPointProvider {
             # Make the REST API call to authenticate
             $response = Invoke-RestMethodIgnoreCertValidation -Uri "$ApiUrl/login" -Method Post -Body $body
 
-            if ($response -and $response.sid) {
+            if ($response.sid) {
                 Write-Verbose "Authentication successful. Token received."
                 $Token = $response.sid
+                $global:CheckPointFireWallSession = [SessionContext]::new($response.sid)
+
             }
             else {
                 throw "Failed to authenticate. No token received."
