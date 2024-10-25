@@ -59,8 +59,13 @@
         )
 
         begin {
-            Write-Verbose "Preparing to retrieve logs from CheckPoint API at $ApiUrl."
-            $token = Connect-CheckPointProvider -ApiUrl $ApiUrl -Credential $cred
+
+            Write-Verbose "Checking existing session"
+            if(-not $global:CheckPointFireWallSession){
+                Write-Verbose "No session found"
+                Write-Verbose "Connecting to CheckPoint Provider"
+                $token = Connect-CheckPointProvider -ApiUrl $ApiUrl -Credential $cred
+            }
         }
 
         process {
@@ -76,13 +81,13 @@
                         'time-frame' = $TimeFrame
                     }
                 }
-
+                
                 $Count = 0
                 # Start the indeterminate progress indicator
                 Write-Progress -Activity " Retrieving logs..." -Status "Initializing...0 records retrieved"
 
                 do {
-
+                    Write-Verbose "Preparing to retrieve logs from CheckPoint API at $ApiUrl."
                     $response = Invoke-RestMethodIgnoreCertValidation -Method Post -Uri "$ApiUrl/show-logs" -Body $body -Headers $headers
                     Write-Verbose "Logs retrieved successfully."
 
@@ -92,7 +97,6 @@
                             [LogEntry]::new($_)
                         } catch {
                             Write-Error "Error creating LogEntry object: $_"
-                            $null  # Optionally, return $null or handle the error as needed
                         }
                     }
 
