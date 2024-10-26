@@ -1,7 +1,7 @@
 class SessionContext {
-    [string]$AuthToken
+    [securestring]$AuthToken
 
-    SessionContext([string]$authToken) {
+    SessionContext([securestring]$authToken) {
         $this.AuthToken = $authToken
     }
 }

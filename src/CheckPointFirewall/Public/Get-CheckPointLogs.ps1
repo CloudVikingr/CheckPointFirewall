@@ -76,7 +76,7 @@
                      throw "No active session. Please connect first using Connect-CheckPointProvider."
                 }
                 
-                $authToken = $global:CheckPointFireWallSession.AuthToken
+                $authToken = Get-PlainToken $global:CheckPointFireWallSession.AuthToken
                 $headers = @{ "X-chkp-sid" = $authToken }
 
                 $queryId = $null
@@ -127,7 +127,7 @@
         }
 
         end {
-            Disconnect-CheckPointProvider -ApiUrl $ApiUrl -Token $token
+            #Disconnect-CheckPointProvider -ApiUrl $ApiUrl -Token $token
             Write-Verbose "Log retrieval process completed."
         }
     } # Get-CheckPointLogs
