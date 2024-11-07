@@ -32,8 +32,11 @@ function Connect-CheckPointProvider {
 
         [Parameter(Mandatory = $false,
                    HelpMessage = "Enter the PSCredential object for API authentication.")]
-        [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]$Credential,
+
+        [Parameter(Mandatory = $false,
+                   HelpMessage = "Credentials won't be cached")]
+        [switch] $NoCacheCredential,
 
         [Parameter(Mandatory = $false,
                    HelpMessage = "Fail on SSL certificate errors.")]
@@ -46,13 +49,34 @@ function Connect-CheckPointProvider {
 
     process {
         try {
-            if (-not $Credential) {
-                throw "Credential is required for authentication if Token is not provided."
+             # Determine which credential to use
+            if ($Credential) {
+                $CurrentCredential = $Credential
+                if (-not $NoCacheCredential) {
+                    $Global:CachedCheckpointCredential = $Credential
+                    Write-Verbose "Credential provided. Updating cached credential."
+                } else {
+                    Write-Verbose "Credential provided but not caching due to -NoCacheCredential switch."
+                }
             }
+            elseif ($Global:CachedCheckpointCredential) {
+                $CurrentCredential = $Global:CachedCheckpointCredential
+                Write-Verbose "Using cached credential."
+            }
+            else {
+                Write-Verbose "No credential provided and no cached credential found. Prompting for credentials."
+                $CurrentCredential = Get-Credential -Message "Enter your Check Point firewall credentials"
+                Write-Verbose "Credentials Entered."
+                if (-not $NoCacheCredential)
+                {
+                    $Global:CachedCheckpointCredential = $CurrentCredential
+                    Write-Verbose "Caching Credentials."
+                }
+            }            
 
-            # Extract username and password from the credential object
-            $Username = $Credential.GetNetworkCredential().UserName
-            $Password = $Credential.GetNetworkCredential().Password
+            # Extract username and password from the CurrentCredential object
+            $Username = $CurrentCredential.GetNetworkCredential().UserName
+            $Password = $CurrentCredential.GetNetworkCredential().Password
 
             # Construct the authentication body
             $body = @{

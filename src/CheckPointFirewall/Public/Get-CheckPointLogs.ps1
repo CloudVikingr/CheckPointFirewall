@@ -51,7 +51,7 @@
             )]
             [string]$TimeFrame = "last-hour",
 
-            [Parameter(Mandatory = $true,
+            [Parameter(Mandatory = $false,
             HelpMessage = "Enter the PSCredential object for API authentication.")]
             [ValidateNotNullOrEmpty()]
             [System.Management.Automation.PSCredential]$Credential
@@ -114,7 +114,6 @@
         }
 
         end {
-            Disconnect-CheckPointProvider -ApiUrl $ApiUrl -Token $token
             Write-Verbose "Log retrieval process completed."
         }
     } # Get-CheckPointLogs

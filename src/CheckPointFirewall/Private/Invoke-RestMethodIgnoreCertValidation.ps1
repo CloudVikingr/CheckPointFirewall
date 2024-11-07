@@ -33,11 +33,7 @@ function Invoke-RestMethodIgnoreCertValidation {
             "Body"        = $Body
         }
 
-
         # Invoke the web request
-        #$response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $Headers -Body $Body 
-        #$response = Invoke-RestMeth
-        #$response = Invoke-RestMethod -Method Post -Uri "$Uri" -Body $Body -Headers $Headers
         $response = Invoke-RestMethod @parameters
 
         # Return the response
