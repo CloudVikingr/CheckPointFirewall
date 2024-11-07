@@ -14,7 +14,6 @@ try {
     $public = @(Get-ChildItem -Path "$PSScriptRoot\Public" @itemSplat)
     $private = @(Get-ChildItem -Path "$PSScriptRoot\Private" @itemSplat)
     $class = @(Get-ChildItem -Path "$PSScriptRoot\Class" @itemSplat)
-    #$class =
 }
 catch {
     Write-Error $_

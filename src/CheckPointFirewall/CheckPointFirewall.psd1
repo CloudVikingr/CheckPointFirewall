@@ -12,7 +12,7 @@
 RootModule = 'CheckPointFirewall.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '1.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -27,10 +27,10 @@ Author = 'Jason Wallace'
 CompanyName = ''
 
 # Copyright statement for this module
-Copyright = ''
+Copyright = '(c) 2024 Jason Wallace. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'desc'
+Description = 'A PS module to encapsulate Checkpoint API calls.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
