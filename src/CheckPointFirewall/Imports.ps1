@@ -4,3 +4,8 @@
 
 # region script variables
 # $script:resourcePath = "$PSScriptRoot\Resources"
+
+if (-not $Global:CachedCheckpointCredential) {
+    $Global:CachedCheckpointCredential = $null
+    Write-Verbose "Initialized global variable for cached credentials."
+}

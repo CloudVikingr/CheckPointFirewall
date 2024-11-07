@@ -61,7 +61,8 @@ function Disconnect-CheckPointProvider {
     }
 
     end {
-
+        Remove-Variable -Name 'CachedCheckpointCredential' -Scope Global -ErrorAction SilentlyContinue
+        Write-Verbose "Cached Credential cleared."
         Write-Verbose "Disconnection attempt completed."
     }
 } # Disconnect-CheckPointProvider
