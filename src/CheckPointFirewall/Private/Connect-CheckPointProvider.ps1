@@ -25,22 +25,21 @@ Version: 1.1
 function Connect-CheckPointProvider {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true,
-                   HelpMessage = "Enter the base URL of the CheckPoint REST API.")]
+        [Parameter(
+            Mandatory = $true,
+            HelpMessage = "Enter the base URL of the CheckPoint REST API.")]
         [ValidateNotNullOrEmpty()]
         [string]$ApiUrl,
 
-        [Parameter(Mandatory = $false,
-                   HelpMessage = "Enter the PSCredential object for API authentication.")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Enter the PSCredential object for API authentication.")]
         [System.Management.Automation.PSCredential]$Credential,
 
-        [Parameter(Mandatory = $false,
-                   HelpMessage = "Credentials won't be cached")]
-        [switch] $NoCacheCredential,
-
-        [Parameter(Mandatory = $false,
-                   HelpMessage = "Fail on SSL certificate errors.")]
-        [switch]$StrictSslErrors
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Credentials won't be cached")]
+        [switch] $NoCacheCredential
     )
 
     begin {
@@ -49,7 +48,7 @@ function Connect-CheckPointProvider {
 
     process {
         try {
-             # Determine which credential to use
+            # Determine which credential to use
             if ($Credential) {
                 $CurrentCredential = $Credential
                 if (-not $NoCacheCredential) {
@@ -58,21 +57,18 @@ function Connect-CheckPointProvider {
                 } else {
                     Write-Verbose "Credential provided but not caching due to -NoCacheCredential switch."
                 }
-            }
-            elseif ($Global:CachedCheckpointCredential) {
+            } elseif ($Global:CachedCheckpointCredential) {
                 $CurrentCredential = $Global:CachedCheckpointCredential
                 Write-Verbose "Using cached credential."
-            }
-            else {
+            } else {
                 Write-Verbose "No credential provided and no cached credential found. Prompting for credentials."
                 $CurrentCredential = Get-Credential -Message "Enter your Check Point firewall credentials"
                 Write-Verbose "Credentials Entered."
-                if (-not $NoCacheCredential)
-                {
+                if (-not $NoCacheCredential) {
                     $Global:CachedCheckpointCredential = $CurrentCredential
                     Write-Verbose "Caching Credentials."
                 }
-            }            
+            }
 
             # Extract username and password from the CurrentCredential object
             $Username = $CurrentCredential.GetNetworkCredential().UserName
@@ -80,7 +76,7 @@ function Connect-CheckPointProvider {
 
             # Construct the authentication body
             $body = @{
-                user = $Username
+                user     = $Username
                 password = $Password
             }
 
@@ -90,14 +86,12 @@ function Connect-CheckPointProvider {
             if ($response -and $response.sid) {
                 Write-Verbose "Authentication successful. Token received."
                 $Token = $response.sid
-            }
-            else {
+            } else {
                 throw "Failed to authenticate. No token received."
             }
             # Return the token for further API calls
             return $Token
-        }
-        catch {
+        } catch {
             Write-Error "An error occurred during connection: $_"
         }
     }

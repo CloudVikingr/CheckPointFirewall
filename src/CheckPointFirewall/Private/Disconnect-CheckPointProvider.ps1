@@ -20,17 +20,17 @@ Date: August 2024
 Version: 1.0
 #>
 function Disconnect-CheckPointProvider {
-    
-
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true, 
-                   HelpMessage = "Enter the base URL of the CheckPoint REST API.")]
+        [Parameter(
+            Mandatory = $true,
+            HelpMessage = "Enter the base URL of the CheckPoint REST API.")]
         [ValidateNotNullOrEmpty()]
         [string]$ApiUrl,
 
-        [Parameter(Mandatory = $true, 
-                   HelpMessage = "Enter the session token to invalidate.")]
+        [Parameter(
+            Mandatory = $true,
+            HelpMessage = "Enter the session token to invalidate.")]
         [ValidateNotNullOrEmpty()]
         [string]$Token
     )
@@ -43,7 +43,7 @@ function Disconnect-CheckPointProvider {
         try {
             # Define the session ID token in the header
             $headers = @{
-                "X-chkp-sid"  = $Token
+                "X-chkp-sid" = $Token
             }
 
             # Make the REST API call to log out
@@ -54,8 +54,7 @@ function Disconnect-CheckPointProvider {
             } else {
                 throw "Failed to disconnect. No response received."
             }
-        }
-        catch {
+        } catch {
             Write-Error "An error occurred during disconnection: $_"
         }
     }

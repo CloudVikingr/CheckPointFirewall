@@ -1,5 +1,5 @@
 function Invoke-RestMethodIgnoreCertValidation {
-	[CmdletBinding()]
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [string]$Uri,
@@ -21,9 +21,8 @@ function Invoke-RestMethodIgnoreCertValidation {
         # Set SSL certificate validation callback to always return true
         [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { return $true }
 
-        # Convert Body to JSON 
+        # Convert Body to JSON
         $Body = $Body | ConvertTo-Json
-        
         # Prepare parameters for Invoke-WebRequest
         $parameters = @{
             "Uri"         = $Uri

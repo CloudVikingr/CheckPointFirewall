@@ -281,7 +281,7 @@ class DomainEntry {
                 $this.Servers = @()
             }
 
-            $this.ManagementServerIP = $this.Servers |where-object {$_.type -eq 'management server'} | select -expandproperty IPv4Address
+            $this.ManagementServerIP = $this.Servers | Where-Object {$_.type -eq 'management server'} | Select-Object -ExpandProperty IPv4Address
 
             $this.Comments = [string]$obj.comments
             $this.Color = [string]$obj.color
@@ -306,10 +306,6 @@ class DomainEntry {
             }
 
             $this.ReadOnly = [bool]$obj.'read-only'
-
-
-            
-
         } catch {
             Write-Error "Error initializing DomainEntry: $_"
         }
